@@ -21,8 +21,12 @@ pipeline {
                     string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'AZURE_SUBSCRIPTION_ID')
                 ]) {
                     sh '''
-                        source $ANSIBLE_ENV/bin/activate
-                        ansible-playbook create-vm.yml
+                        export AZURE_CLIENT_ID=$AZURE_CLIENT_ID
+                        export AZURE_SECRET=$AZURE_SECRET
+                        export AZURE_TENANT=$AZURE_TENANT
+                        export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+
+                        $ANSIBLE_ENV/bin/ansible-playbook create-vm.yml
                     '''
                 }
             }
