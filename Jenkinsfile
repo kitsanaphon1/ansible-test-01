@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        ANSIBLE_ENV = "${HOME}/ansible-azure-env"
+        ANSIBLE_ENV = "/home/mis/ansible-azure-env"
     }
 
     stages {
