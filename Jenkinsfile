@@ -23,18 +23,15 @@ pipeline {
                 ]) {
                     sh '''
                         set -e
-
-                        echo "[INFO] Activating Python virtual environment..."
-                        source $ANSIBLE_ENV/bin/activate
-
-                        echo "[INFO] Setting Azure credentials..."
-                        export AZURE_CLIENT_ID=$AZURE_CLIENT_ID
-                        export AZURE_SECRET=$AZURE_SECRET
-                        export AZURE_TENANT=$AZURE_TENANT
-                        export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
-
-                        echo "[INFO] Running Ansible playbook..."
-                        $ANSIBLE_PLAYBOOK create-vm.yml
+                        echo "[INFO] Activating Python virtual environment and running Ansible..."
+                        bash -c "
+                            source $ANSIBLE_ENV/bin/activate &&
+                            export AZURE_CLIENT_ID=$AZURE_CLIENT_ID &&
+                            export AZURE_SECRET=$AZURE_SECRET &&
+                            export AZURE_TENANT=$AZURE_TENANT &&
+                            export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID &&
+                            $ANSIBLE_PLAYBOOK create-vm.yml
+                        "
                     '''
                 }
             }
