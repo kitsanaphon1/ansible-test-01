@@ -21,18 +21,19 @@ pipeline {
                     string(credentialsId: 'AZURE_TENANT', variable: 'AZURE_TENANT'),
                     string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'AZURE_SUBSCRIPTION_ID')
                 ]) {
-                    sh '''
+                    sh """
                         echo "[INFO] Activating virtual environment and running Ansible playbook..."
 
-                        source $ANSIBLE_ENV/bin/activate
-
-                        export AZURE_CLIENT_ID=$AZURE_CLIENT_ID
-                        export AZURE_SECRET=$AZURE_SECRET
-                        export AZURE_TENANT=$AZURE_TENANT
-                        export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
-
-                        $ANSIBLE_PLAYBOOK create-vm.yml
-                    '''
+                        bash -c '
+                            set -e
+                            source "$ANSIBLE_ENV/bin/activate"
+                            export AZURE_CLIENT_ID="$AZURE_CLIENT_ID"
+                            export AZURE_SECRET="$AZURE_SECRET"
+                            export AZURE_TENANT="$AZURE_TENANT"
+                            export AZURE_SUBSCRIPTION_ID="$AZURE_SUBSCRIPTION_ID"
+                            "$ANSIBLE_PLAYBOOK" create-vm.yml
+                        '
+                    """
                 }
             }
         }
