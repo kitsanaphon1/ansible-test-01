@@ -19,8 +19,7 @@ pipeline {
                     string(credentialsId: 'AZURE_CLIENT_ID', variable: 'AZURE_CLIENT_ID'),
                     string(credentialsId: 'AZURE_SECRET', variable: 'AZURE_SECRET'),
                     string(credentialsId: 'AZURE_TENANT', variable: 'AZURE_TENANT'),
-                    string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'AZURE_SUBSCRIPTION_ID'),
-                    string(credentialsId: 'AZURE_ADMIN_PASS', variable: 'ADMIN_PASS') // 🔒 ใหม่
+                    string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'AZURE_SUBSCRIPTION_ID')
                 ]) {
                     sh '''
                         echo "[INFO] Activating virtual environment and running Ansible playbook..."
@@ -31,7 +30,7 @@ pipeline {
                             export AZURE_SECRET=$AZURE_SECRET &&
                             export AZURE_TENANT=$AZURE_TENANT &&
                             export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID &&
-                            $ANSIBLE_PLAYBOOK create-vm.yml --extra-vars admin_password=$ADMIN_PASS
+                            $ANSIBLE_PLAYBOOK create-vm.yml
                         "
                     '''
                 }
