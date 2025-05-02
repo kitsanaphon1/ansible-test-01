@@ -15,10 +15,10 @@ pipeline {
         stage('Run Ansible to Create VM') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
-                    string(credentialsId: 'azure-secret', variable: 'AZURE_SECRET'),
-                    string(credentialsId: 'azure-tenant', variable: 'AZURE_TENANT'),
-                    string(credentialsId: 'azure-subscription-id', variable: 'AZURE_SUBSCRIPTION_ID')
+                    string(credentialsId: 'AZURE_CLIENT_ID', variable: 'AZURE_CLIENT_ID'),
+                    string(credentialsId: 'AZURE_SECRET', variable: 'AZURE_SECRET'),
+                    string(credentialsId: 'AZURE_TENANT', variable: 'AZURE_TENANT'),
+                    string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'AZURE_SUBSCRIPTION_ID')
                 ]) {
                     sh '''
                         source $ANSIBLE_ENV/bin/activate
