@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         ANSIBLE_ENV = "/home/mis/ansible-azure-env"
+        ANSIBLE_PLAYBOOK = "/home/mis/ansible-azure-env/bin/ansible-playbook"
     }
 
     stages {
@@ -26,7 +27,7 @@ pipeline {
                         export AZURE_TENANT=$AZURE_TENANT
                         export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
 
-                        $ANSIBLE_ENV/bin/ansible-playbook create-vm.yml
+                        $ANSIBLE_PLAYBOOK create-vm.yml
                     '''
                 }
             }
