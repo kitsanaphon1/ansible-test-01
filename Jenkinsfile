@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        ANSIBLE_ENV = "/home/mis/ansible-azure-env"
-        ANSIBLE_PLAYBOOK = "/home/mis/ansible-azure-env/bin/ansible-playbook"
+        ANSIBLE_ENV = "/var/lib/jenkins/ansible-azure-env"
+        ANSIBLE_PLAYBOOK = "/var/lib/jenkins/ansible-azure-env/bin/ansible-playbook"
     }
 
     stages {
@@ -22,11 +22,18 @@ pipeline {
                     string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'AZURE_SUBSCRIPTION_ID')
                 ]) {
                     sh '''
+                        set -e
+
+                        echo "[INFO] Activating Python virtual environment..."
+                        source $ANSIBLE_ENV/bin/activate
+
+                        echo "[INFO] Setting Azure credentials..."
                         export AZURE_CLIENT_ID=$AZURE_CLIENT_ID
                         export AZURE_SECRET=$AZURE_SECRET
                         export AZURE_TENANT=$AZURE_TENANT
                         export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
 
+                        echo "[INFO] Running Ansible playbook..."
                         $ANSIBLE_PLAYBOOK create-vm.yml
                     '''
                 }
