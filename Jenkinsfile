@@ -7,13 +7,13 @@ pipeline {
     }
 
     stages {
-        stage('Clone Ansible Repo') {
+        stage('Clone Ansible Playbook') {
             steps {
                 git branch: 'test', url: 'https://github.com/kitsanaphon1/ansible-test-01.git'
             }
         }
 
-        stage('Run Ansible to Create VM') {
+        stage('Run Ansible to Create Azure VM') {
             steps {
                 withCredentials([
                     string(credentialsId: 'AZURE_CLIENT_ID', variable: 'AZURE_CLIENT_ID'),
@@ -23,15 +23,15 @@ pipeline {
                 ]) {
                     sh '''
                         echo "[INFO] Activating virtual environment and running Ansible playbook..."
-                        bash -c "
-                            set -e
-                            source $ANSIBLE_ENV/bin/activate &&
-                            export AZURE_CLIENT_ID=$AZURE_CLIENT_ID &&
-                            export AZURE_SECRET=$AZURE_SECRET &&
-                            export AZURE_TENANT=$AZURE_TENANT &&
-                            export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID &&
-                            $ANSIBLE_PLAYBOOK create-vm.yml
-                        "
+
+                        source $ANSIBLE_ENV/bin/activate
+
+                        export AZURE_CLIENT_ID=$AZURE_CLIENT_ID
+                        export AZURE_SECRET=$AZURE_SECRET
+                        export AZURE_TENANT=$AZURE_TENANT
+                        export AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+
+                        $ANSIBLE_PLAYBOOK create-vm.yml
                     '''
                 }
             }
